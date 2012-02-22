@@ -53,9 +53,9 @@ class report_workflow_configure_form extends moodleform {
         }
         $this->add_checkbox_controller(1, null, null);
 
-        $mform->addElement('text', 'courseregexp', get_string('courses', 'report_workflow'));
+        $mform->addElement('text', 'courseregexp', get_string('courseregexp', 'report_workflow'));
+        $mform->addHelpButton('courseregexp', 'courseregexp', 'report_workflow');
         $mform->setType('courseregexp', PARAM_TEXT);
-
 
         $displaytypeoptions = array(
             REPORT_WORKFLOW_DETAIL => get_string('full', 'report_workflow'),
@@ -82,8 +82,8 @@ class report_workflow_configure_form extends moodleform {
         $mform->addElement('hidden', 'appliesto');
         $mform->setType('appliesto', PARAM_TEXT);
 
-        // Finally add the continue button
-        $this->add_action_buttons(false, get_string('continue', 'report_workflow'));
+        // Finally add the submit button
+        $this->add_action_buttons(false, get_string('generatereport', 'report_workflow'));
     }
 
     public function validation($data, $files) {

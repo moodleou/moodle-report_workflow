@@ -507,7 +507,7 @@ class report_workflow_table_course        extends report_workflow_table {
 
     public function __construct() {
         parent::__construct('block-workflow-report-overview-course');
-        $this->openingcolumns['coursename']   = get_string('report_coursename', 'report_workflow');
+        $this->openingcolumns['courseshortname']   = get_string('course');
         $this->closingcolumns['categoryname'] = get_string('report_categoryname', 'report_workflow');
     }
 
@@ -536,17 +536,17 @@ class report_workflow_table_course        extends report_workflow_table {
      *
      * @param   string  The field contents
      */
-    protected function col_coursename($row){
+    protected function col_courseshortname($row){
 
         if ($this->is_downloading()) {
-            return $row->coursename;
+            return $row->courseshortname;
         }
 
         $url = new moodle_url('/blocks/workflow/overview.php',
                                array('contextid'  => $row->contextid,
                                      'workflowid' => $row->workflowid
                               ));
-        return html_writer::link($url, $row->coursename);
+        return html_writer::link($url, $row->courseshortname);
     }
 }
 
@@ -565,7 +565,7 @@ class report_workflow_table_activity      extends report_workflow_table {
     public function __construct($appliesto, $uniqueid = 'block-workflow-report-overview-activity') {
         parent::__construct($uniqueid);
         $this->appliesto = $appliesto;
-        $this->openingcolumns['coursename'] = get_string('report_coursename', 'report_workflow');
+        $this->openingcolumns['courseshortname'] = get_string('course');
         $this->openingcolumns['activityname'] = get_string('report_activityname', 'report_workflow');
     }
 
