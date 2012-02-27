@@ -164,9 +164,9 @@ class report_workflow_table               extends table_sql {
 
         // Generate the step columns and their headers
         foreach ($this->get_step_columns($workflows)  as $columnname => $columnheader){
-            $columnnames[]         = $columnname;
-            $this->column_nosort[] = $columnname;
-            $headernames[]         = $columnheader;
+            $columnnames[] = $columnname;
+            $headernames[] = $columnheader;
+            $this->no_sorting($columnname);
         }
 
         // Add the closing columns and their headers
@@ -631,12 +631,13 @@ class report_workflow_table_activity_quiz extends report_workflow_table_activity
 
         // Two weeks before opening date
         $this->closingcolumns['2wbod'] = get_string('report_2wbod',     'report_workflow');
+        $this->no_sorting('2wbod');
 
         // Quiz Opening date
-        $this->closingcolumns['opendate'] =  get_string('report_opendate',  'report_workflow');
+        $this->closingcolumns['timeopen'] =  get_string('report_opendate',  'report_workflow');
 
         // Quiz Closing date
-        $this->closingcolumns['closedate'] = get_string('report_closedate', 'report_workflow');
+        $this->closingcolumns['timeclose'] = get_string('report_closedate', 'report_workflow');
     }
 
     /**
@@ -674,7 +675,7 @@ class report_workflow_table_activity_quiz extends report_workflow_table_activity
      *
      * @param   string  The field contents
      */
-    protected function col_opendate($row) {
+    protected function col_timeopen($row) {
         $output  = '';
         if ($row->timeopen) {
             $output = userdate($row->timeopen, get_string('strftimedatetimeshort', 'langconfig'));
@@ -687,7 +688,7 @@ class report_workflow_table_activity_quiz extends report_workflow_table_activity
      *
      * @param   string  The field contents
      */
-    protected function col_closedate($row) {
+    protected function col_timeclose($row) {
         $output  = '';
         if ($row->timeclose) {
             $output = userdate($row->timeclose, get_string('strftimedatetimeshort', 'langconfig'));
