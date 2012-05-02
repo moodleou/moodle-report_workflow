@@ -24,7 +24,7 @@
 
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once(dirname(__FILE__) . '/generate_form.php');
-require_once($CFG->dirroot . '/blocks/workflow/lib.php');
+require_once($CFG->dirroot . '/blocks/workflow/locallib.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 // Retrieve the submitted parameters
