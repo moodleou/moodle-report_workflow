@@ -18,7 +18,7 @@
  * Workflow admin report versioning
  *
  * @package   report_workflow
- * @copyright 2011 Lancaster University Network Services Limited
+ * @copyright 2011 The Open University / Lancaster University Network Services Limited
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +30,7 @@ $plugin->requires  = 2011120500;
 $plugin->cron      = 0;
 $plugin->component = 'report_workflow';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '2.2';
+$plugin->release   = 'v1';
 
 $plugin->dependencies = array(
     'block_workflow' => ANY_VERSION,
