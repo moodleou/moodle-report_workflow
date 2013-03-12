@@ -1,6 +1,6 @@
 WORKFLOW REPORT
 
-This report goes with the workflow block. https://github.com/moodleou/block_workflow.
+This report goes with the workflow block. https://github.com/moodleou/moodle-block_workflow.
 It was created for the Open Unversity https://www.open.ac.uk/) by LUNS
 (http://www.luns.net.uk/services/virtual-learning-environments/vle-services/).
 The specification was writted by Tim Hunt and Sharon Monie.
@@ -15,4 +15,4 @@ of your Moodle install:
 Once you have added the code to Moodle, visit the admin notifications page to
 complete the installation.
 
-For more documentation, see http://docs.moodle.org/23/en/The_OU_workflow_system.
+For more documentation, see http://docs.moodle.org/24/en/The_OU_workflow_system.

@@ -22,16 +22,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2012021500;
+$plugin->version   = 2013031200;
 $plugin->requires  = 2011120500;
 $plugin->cron      = 0;
 $plugin->component = 'report_workflow';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1';
+$plugin->release   = 'v1.1 for Moodle 2.2+';
 
 $plugin->dependencies = array(
-    'block_workflow' => ANY_VERSION,
+    'block_workflow' => 2013031200,
 );
