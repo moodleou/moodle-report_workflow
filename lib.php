@@ -263,6 +263,8 @@ class report_workflow_table               extends table_sql {
         $this->sqldata->from[]   = 'LEFT  JOIN {context}                    AS c    ON c.id         = ss1.contextid';
         $this->sqldata->where[]  = 's1.stepno = 1';
 
+        $this->sqldata->stepstates = array('ss1.state');
+
         // Add the list of workflows
         foreach ($workflows as $workflow) {
             $this->sqldata->workflows[] = 'w.shortname = ?';
@@ -334,9 +336,13 @@ class report_workflow_table               extends table_sql {
      * @return  void
      */
     protected function generate_sql() {
-        $this->sql->fields  = implode(', ', $this->sqldata->fields);
-        $this->sql->from    = implode(' ',  $this->sqldata->from);
-        $this->sql->where   = implode(' ', $this->sqldata->where);
+        $this->sqldata->where[] = ' AND ? IN (' . implode(', ', $this->sqldata->stepstates) . ')';
+        $this->sqldata->params[] = BLOCK_WORKFLOW_STATE_ACTIVE;
+
+        $this->sql = new stdClass();
+        $this->sql->fields  = implode(",\n    ", $this->sqldata->fields);
+        $this->sql->from    = implode("\n",  $this->sqldata->from);
+        $this->sql->where   = implode("\n    ", $this->sqldata->where);
         $this->sql->params  = $this->sqldata->params;
         $this->countparams  = $this->sql->params;
     }
@@ -361,6 +367,7 @@ class report_workflow_table               extends table_sql {
             $this->sqldata->fields[]    = $ssname . '.timemodified    AS stepno_' . $stepno . '_timemodified';
             $this->sqldata->from[]      = 'LEFT JOIN {block_workflow_steps}         AS ' . $sname  . ' ON ' . $sname  . '.stepno = ' . $stepno . ' AND ' . $sname . '.workflowid = w.id';
             $this->sqldata->from[]      = 'LEFT JOIN {block_workflow_step_states}   AS ' . $ssname . ' ON ' . $ssname . '.contextid = c.id AND ' . $ssname . '.stepid = ' . $sname . '.id';
+            $this->sqldata->stepstates[] = $ssname . '.state';
             $stepno++;
         }
     }
@@ -624,10 +631,10 @@ class report_workflow_table_activity      extends report_workflow_table {
  * @package    report
  * @subpackage workflow
  */
-class report_workflow_table_activity_quiz extends report_workflow_table_activity {
+class report_workflow_table_quiz_like_activity extends report_workflow_table_activity {
 
-    public function __construct() {
-        parent::__construct('quiz', 'block-workflow-report-overview-quiz');
+    public function __construct($type) {
+        parent::__construct($type, 'block-workflow-report-overview-' . $type);
 
         // Two weeks before opening date
         $this->closingcolumns['2wbod'] = get_string('report_2wbod',     'report_workflow');
@@ -638,23 +645,6 @@ class report_workflow_table_activity_quiz extends report_workflow_table_activity
 
         // Quiz Closing date
         $this->closingcolumns['timeclose'] = get_string('report_closedate', 'report_workflow');
-    }
-
-    /**
-     * Generate the intermediate SQL data structure to retrieve the information required for a
-     * quiz report.
-     *
-     * Please see full documentation as provided by {@link report_workflow_table::generate_query}.
-     *
-     * This extension links the quiz table, and selects the timeopen, and timeclose fields.
-     *
-     * @param   Array    $workflows The list of workflows to generate data for
-     * @return  void
-     */
-    protected function generate_query($workflows) {
-        parent::generate_query($workflows);
-        $this->sqldata->fields[] = 'quiz.timeopen          AS timeopen';
-        $this->sqldata->fields[] = 'quiz.timeclose         AS timeclose';
     }
 
     /**
@@ -694,6 +684,44 @@ class report_workflow_table_activity_quiz extends report_workflow_table_activity
             $output = userdate($row->timeclose, get_string('strftimedatetimeshort', 'langconfig'));
         }
         return $output;
+    }
+}
+
+
+/**
+ * Class used to generate a reporting table for an externalquiz activity
+ *
+ * @copyright  2012 the Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class report_workflow_table_activity_quiz extends report_workflow_table_quiz_like_activity {
+    public function __construct() {
+        parent::__construct('quiz');
+    }
+
+    protected function generate_query($workflows) {
+        parent::generate_query($workflows);
+        $this->sqldata->fields[] = 'quiz.timeopen          AS timeopen';
+        $this->sqldata->fields[] = 'quiz.timeclose         AS timeclose';
+    }
+}
+
+
+/**
+ * Class used to generate a reporting table for an externalquiz activity
+ *
+ * @copyright  2012 the Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class report_workflow_table_activity_externalquiz extends report_workflow_table_quiz_like_activity {
+    public function __construct() {
+        parent::__construct('externalquiz');
+    }
+
+    protected function generate_query($workflows) {
+        parent::generate_query($workflows);
+        $this->sqldata->fields[] = 'externalquiz.timeopen          AS timeopen';
+        $this->sqldata->fields[] = 'externalquiz.timeclose         AS timeclose';
     }
 }
 
