@@ -25,7 +25,7 @@
 $capabilities = array(
 
     // By default given to manager
-    // Allows access to, and use of the workflow report
+    // Allows access to, and use of the workflow report.
     'report/workflow:view' => array(
         'captype'       => 'read',
         'contextlevel'  => CONTEXT_SYSTEM,

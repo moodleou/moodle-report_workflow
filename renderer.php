@@ -43,32 +43,32 @@ class report_workflow_renderer extends plugin_renderer_base {
     public function select_appliesto(array $options) {
         $output = '';
 
-        // Display some information about the select
+        // Display some information about the select.
         $output .= $this->box_start('generalbox boxwidthwide boxaligncenter centerpara', 'appliestoform');
         $output .= $this->heading(get_string('reportsettings', 'report_workflow'));
         $output .= html_writer::tag('p', get_string('report_intro', 'report_workflow'), array('id' => 'intro'));
 
-        // The URL we return to
+        // The URL we return to.
         $url = new moodle_url('/report/workflow/index.php');
 
-        // Create the list of available workflows
+        // Create the list of available workflows.
         foreach ($options as $shortname => $name) {
             $option[$shortname] = $name;
         }
 
-        // Create the single_select
+        // Create the single_select.
         $select = new single_select($url, 'appliesto', $option);
 
-        // Give it a label and change it to post the data
+        // Give it a label and change it to post the data.
         $select->set_label(get_string('appliesto', 'report_workflow'));
 
-        // Render it
+        // Render it.
         $output .= $this->render($select);
 
-        // Close the box we started earlier
+        // Close the box we started earlier.
         $output .= $this->box_end();
 
-        // Return the generated output
+        // Return the generated output.
         return $output;
     }
 }

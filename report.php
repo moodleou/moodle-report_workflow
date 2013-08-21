@@ -33,69 +33,64 @@ $appliesto  = required_param('appliesto', PARAM_ALPHA);
 // Is the user trying to download this report?
 $download   = optional_param('download', '', PARAM_ALPHA);
 
-// Require that the user be logged in and have valid permissions
+// Require that the user be logged in and have valid permissions.
 require_login();
 require_capability('report/workflow:view', get_context_instance(CONTEXT_SYSTEM));
 
-// This is a report/workflow page
+// This is a report/workflow page.
 admin_externalpage_setup('reportworkflow', '', array(), '', array('pagelayout' => 'report'));
 
 // Instantiate the form
-// We must provide the appliesto, otherwise the checkboxes aren't correctly
-// returned
+// We must provide the appliesto, otherwise the checkboxes aren't correctly returned.
 $form = new report_workflow_configure_form(null, array('appliesto' => $appliesto), 'GET');
 
 if ($form->is_cancelled()) {
-    // The form was cancelled -- return to the index page
+    // The form was cancelled -- return to the index page.
     redirect(new moodle_url('/report/workflow/index.php'));
 
 } else if ($data = $form->get_data()) {
-    // The form was submitted and passed validation
+    // The form was submitted and passed validation.
 
 
-    // set user preferences
+    // Set user preferences.
     set_user_preference('report_workflow_displaytype', $data->displaytype);
     set_user_preference('report_workflow_rowsperpage', $data->rowsperpage);
 
-    // Generate the correct type of workflow_report_table for this type of workflow
+    // Generate the correct type of workflow_report_table for this type of workflow.
     $generator = report_workflow::load($data->appliesto);
 
-    // Set the table generation options
+    // Set the table generation options.
     $options = new stdClass();
-    $options->detailed        = ($data->displaytype == REPORT_WORKFLOW_DETAIL) ? REPORT_WORKFLOW_DETAIL : REPORT_WORKFLOW_BRIEF;
+    $options->detailed = ($data->displaytype == REPORT_WORKFLOW_DETAIL) ? REPORT_WORKFLOW_DETAIL : REPORT_WORKFLOW_BRIEF;
 
-    // If we were provided with a valid regexp, we should pass it as an option
+    // If we were provided with a valid regexp, we should pass it as an option.
     if (!empty($data->courseregexp)) {
         $options->courseregexp    = $data->courseregexp;
     }
 
 
-    // Create an array of block_workflow_workflow objects as these will be needed for the table
-    // generation
+    // Create an array of block_workflow_workflow objects as these will be needed for the table generation.
     $workflows = array();
     foreach ($data->workflow as $workflowid => $v) {
         if ($v) {
-            // This workflow was selected so instantiate it and add it to the list
+            // This workflow was selected so instantiate it and add it to the list.
             $workflows[] = new block_workflow_workflow($workflowid);
         }
     }
 
     if (empty($workflows)) {
-        //FIXME: Really formslib should be able to validate that at least one 
-        //workflow is selected
+        // FIXME: Really formslib should be able to validate that at least one workflow is selected.
         echo $OUTPUT->header();
 
-        echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter');
         echo $OUTPUT->heading(format_string(get_string('report_title', 'report_workflow')));
         $generator->print_nothing_to_display();
-        echo $OUTPUT->box_end();
 
-        // Display the footer section
+        // Display the footer section.
         echo $OUTPUT->footer();
         exit;
     }
 
-    // Initiate the table using the supplied options and workflows
+    // Initiate the table using the supplied options and workflows.
     $table = $generator->generate_table($options, $workflows);
 
     // Set the table base URL.
@@ -113,38 +108,32 @@ if ($form->is_cancelled()) {
     }
     $table->define_baseurl(new moodle_url('/report/workflow/report.php', $params));
 
-    // Pass the form the download value -- is_downloading should handle this correctly if a download
-    // was requested
+    // Pass the form the download value -- is_downloading should handle this correctly if a download was requested.
     $table->is_downloading($download, 'workflow-report', get_string('report_title', 'report_workflow'));
 
     if (!$table->is_downloading()) {
-        // Display the header section
+        // Display the header section.
         echo $OUTPUT->header();
 
-        echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter');
         echo $OUTPUT->heading(format_string(get_string('report_title', 'report_workflow')));
 
-        // Actually generate the table
+        // Actually generate the table.
         $table->out($data->rowsperpage, true);
 
-        // Display the form to allow re-submission/editing
+        // Display the form to allow re-submission/editing.
         $form->display();
 
-        echo $OUTPUT->box_end();
-
-        // Display the footer section
+        // Display the footer section.
         echo $OUTPUT->footer();
 
     } else {
-        // Actually generate the table
+        // Actually generate the table.
         $table->out($data->rowsperpage, true);
     }
 
-} else{
+} else {
     echo $OUTPUT->header();
-    echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter');
     echo $OUTPUT->heading(format_string(get_string('report_title', 'report_workflow')));
     $form->display();
-    echo $OUTPUT->box_end();
     echo $OUTPUT->footer();
 }

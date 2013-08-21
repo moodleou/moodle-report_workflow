@@ -27,35 +27,34 @@ require_once(dirname(__FILE__) . '/generate_form.php');
 require_once($CFG->dirroot . '/blocks/workflow/locallib.php');
 require_once($CFG->libdir . '/adminlib.php');
 
-// Retrieve the submitted parameters
+// Retrieve the submitted parameters.
 $appliesto  = optional_param('appliesto', null, PARAM_ALPHA);
 
-// Require login and capability
+// Require login and capability.
 require_login();
 require_capability('report/workflow:view', get_context_instance(CONTEXT_SYSTEM));
 
-// This is a report workflow page
+// This is a report workflow page.
 admin_externalpage_setup('reportworkflow');
 
-// Display the header section
+// Display the header section.
 echo $OUTPUT->header();
 
 $allappliesto = $DB->get_records_sql('SELECT DISTINCT(appliesto) FROM {block_workflow_workflows}');
 
-// Display appliesto chooser if not set, or invalid appliesto specified
+// Display appliesto chooser if not set, or invalid appliesto specified.
 if (empty($appliesto) || !array_key_exists($appliesto, $allappliesto)) {
     if (count($allappliesto) > 0) {
-        // Only list contexts which have workflows available
+        // Only list contexts which have workflows available.
         $appliestolist = array_intersect_key(block_workflow_appliesto_list(), $allappliesto);
 
-        // Retrieve the renderer
+        // Retrieve the renderer.
         $renderer = $PAGE->get_renderer('report_workflow');
 
-        // If no appliesto has been set, then display the select dialogue
+        // If no appliesto has been set, then display the select dialogue.
         echo $renderer->select_appliesto($appliestolist);
-    }
-    else {
-        // No workflows are defined so no data to run reports on
+    } else {
+        // No workflows are defined so no data to run reports on.
         echo $OUTPUT->heading(get_string('nothingtodisplay'));
         echo $OUTPUT->box_start('generablbox boxwidthwide boxaligncenter');
         echo get_string('noworkflowsdefined', 'report_workflow');
@@ -63,23 +62,23 @@ if (empty($appliesto) || !array_key_exists($appliesto, $allappliesto)) {
     }
 
 } else {
-    // We've been passed the appliesto data
+    // We've been passed the appliesto data.
 
-    // Create the form
+    // Create the form.
     $reporturl = new moodle_url('/report/workflow/report.php');
     $form = new report_workflow_configure_form($reporturl, array('appliesto' => $appliesto), 'GET');
 
-    // Set the form defaults
+    // Set the form defaults.
     $defaults = new stdClass();
     $defaults->appliesto = $appliesto;
     $form->set_data($defaults);
 
     echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter');
     echo $OUTPUT->heading(format_string(get_string('report_title', 'report_workflow')));
-    // Display
+    // Display.
     $form->display();
     echo $OUTPUT->box_end();
 }
 
-// Display the footer section
+// Display the footer section.
 echo $OUTPUT->footer();

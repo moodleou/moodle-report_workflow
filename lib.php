@@ -23,7 +23,7 @@
  */
 
 if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
 }
 
 require_once($CFG->dirroot . '/blocks/workflow/locallib.php');
@@ -52,27 +52,27 @@ class report_workflow {
      */
     public static function load($appliesto) {
         if (empty($appliesto)) {
-            // We must have an appliesto
+            // We must have an appliesto.
             throw new report_workflow_exception(get_string('invalidappliesto', 'report_workflow'));
         }
 
-        // All classes fit this basename pattern
+        // All classes fit this basename pattern.
         $basename = 'report_workflow_table_';
 
-        // Try and load the course class
+        // Try and load the course class.
         if ($appliesto == 'course') {
             return new report_workflow_table_course();
         }
 
         // Everything else is an activity. See if there's a specific class
-        // for that activity
+        // for that activity.
         $activityclass = $basename . 'activity_';
         $classname = $activityclass . $appliesto;
         if (class_exists($classname)) {
             return new $classname();
         }
 
-        // Fall back to the activity class
+        // Fall back to the activity class.
         return new report_workflow_table_activity($appliesto);
     }
 }
@@ -136,59 +136,48 @@ class report_workflow_table               extends table_sql {
      */
     public function generate_table($options, $workflows) {
 
-        /**
-         * Take the options and store/process them as appropriate
-         */
-        // Whether this view is detailed or brief
+        // Take the options and store/process them as appropriate.
         $this->detailed     = $options->detailed;
 
-
-        /**
-         * Generate definitions for all of the columns.
-         * These are broken down into three groups:
-         * - Opening columns
-         * - Step Columns
-         * - Closing columns
-         *
-         */
-
+        // Generate definitions for all of the columns.
+        // These are broken down into three groups:
+        // - Opening columns
+        // - Step Columns
+        // - Closing columns.
         $columnnames = array();
         $headernames = array();
         $nosorting   = array();
 
-        // Add the opening columns and their headers
-        foreach ($this->openingcolumns as $columnname => $columnheader){
+        // Add the opening columns and their headers.
+        foreach ($this->openingcolumns as $columnname => $columnheader) {
             $columnnames[] = $columnname;
             $headernames[] = $columnheader;
         }
 
-        // Generate the step columns and their headers
-        foreach ($this->get_step_columns($workflows)  as $columnname => $columnheader){
+        // Generate the step columns and their headers.
+        foreach ($this->get_step_columns($workflows) as $columnname => $columnheader) {
             $columnnames[] = $columnname;
             $headernames[] = $columnheader;
             $this->no_sorting($columnname);
         }
 
-        // Add the closing columns and their headers
-        foreach ($this->closingcolumns  as $columnname => $columnheader){
+        // Add the closing columns and their headers.
+        foreach ($this->closingcolumns as $columnname => $columnheader) {
             $columnnames[] = $columnname;
             $headernames[] = $columnheader;
         }
 
-        // These two function calls are provided by the flexible_table parent class
+        // These two function calls are provided by the flexible_table parent class.
         $this->define_columns($columnnames);
         $this->define_headers($headernames);
 
-        /**
-         * Set the SQL query
-         *
-         * We build this by first generating a query,
-         * and then converting these from our arrays into the object expected by query_db
-         */
+        // Set the SQL query
+        // We build this by first generating a query,
+        // and then converting these from our arrays into the object expected by query_db.
         $this->generate_query($workflows);
         $this->generate_steps_sql();
 
-        // Whether any regular expression has been set for this query
+        // Whether any regular expression has been set for this query.
         if (isset($options->courseregexp)) {
             $this->generate_course_conditions($options->courseregexp);
         }
@@ -205,14 +194,14 @@ class report_workflow_table               extends table_sql {
      * @return  array  An associative array of columns format: array('columnanme' => $columntitle)
      */
     protected function get_step_columns($workflows) {
-        // Check each workflow for the number of steps
+        // Check each workflow for the number of steps.
         $maxsteps = 0;
         foreach ($workflows as $w) {
             $sc = count($w->steps());
             if ($sc > $maxsteps) {
                 $maxsteps = $sc;
 
-                // The generate_steps_sql() column requires the $this->maxsteps
+                // The generate_steps_sql() column requires the $this->maxsteps.
                 $this->maxsteps = $maxsteps;
             }
         }
@@ -245,7 +234,7 @@ class report_workflow_table               extends table_sql {
     protected function generate_query($workflows) {
         $this->sqldata = new stdClass();
 
-        // Define the default fields
+        // Define the default fields.
         $this->sqldata->fields[] = 'c.id                AS contextid';
         $this->sqldata->fields[] = 'co.shortname        AS courseshortname';
         $this->sqldata->fields[] = 'co.fullname         AS coursename';
@@ -265,7 +254,7 @@ class report_workflow_table               extends table_sql {
 
         $this->sqldata->stepstates = array('ss1.state');
 
-        // Add the list of workflows
+        // Add the list of workflows.
         foreach ($workflows as $workflow) {
             $this->sqldata->workflows[] = 'w.shortname = ?';
             $this->sqldata->params[] = $workflow->shortname;
@@ -276,14 +265,14 @@ class report_workflow_table               extends table_sql {
 
     /**
      * Add where clauses to the instance based on a simplified regular expression syntax
-     * passed from the user. This allows course searching such as CS10? or CS* to 
+     * passed from the user. This allows course searching such as CS10? or CS* to
      * match CF101 course shortname
      *
      * @var string  $courseregexp   The simplified regular expression used to search for these courses
      *
      * @return  void
      */
-    private function generate_course_conditions($courseregexp){
+    private function generate_course_conditions($courseregexp) {
         global $DB;
 
         $shortnamecondition = '';
@@ -292,16 +281,16 @@ class report_workflow_table               extends table_sql {
         if (count($splitshortname) > 0) {
             $first = true;
             foreach ($splitshortname as $option) {
-                // convert to sql syntax
+                // Convert to sql syntax.
                 $option = str_replace('*', '%', $option);
                 $option = str_replace('?', '_', $option);
 
-                // If someone types in multiple * signs, turn them into one
+                // If someone types in multiple * signs, turn them into one.
                 $option = preg_replace('~%+~', '%', $option);
 
-                // If the whole thing is * then ignore
+                // If the whole thing is * then ignore.
                 if ($option == '*') {
-                    next;
+                    continue;
                 }
 
                 if ($first) {
@@ -315,8 +304,8 @@ class report_workflow_table               extends table_sql {
                 $shortnamevalues[] = $option;
             }
 
-            if($first){
-                // we didn't get any valid regexps
+            if ($first) {
+                // We didn't get any valid regexps.
                 return;
             }
 
@@ -360,13 +349,15 @@ class report_workflow_table               extends table_sql {
         while ($stepno <= $this->maxsteps) {
             $ssname = 'ss' . $stepno;
             $sname  = 's'  . $stepno;
-            $this->sqldata->fields[]    = $sname  . '.name            AS stepno_' . $stepno . '_name';
-            $this->sqldata->fields[]    = $ssname . '.state           AS stepno_' . $stepno . '_state';
-            $this->sqldata->fields[]    = $ssname . '.comment         AS stepno_' . $stepno . '_comment';
-            $this->sqldata->fields[]    = $ssname . '.commentformat   AS stepno_' . $stepno . '_commentformat';
-            $this->sqldata->fields[]    = $ssname . '.timemodified    AS stepno_' . $stepno . '_timemodified';
-            $this->sqldata->from[]      = 'LEFT JOIN {block_workflow_steps}         AS ' . $sname  . ' ON ' . $sname  . '.stepno = ' . $stepno . ' AND ' . $sname . '.workflowid = w.id';
-            $this->sqldata->from[]      = 'LEFT JOIN {block_workflow_step_states}   AS ' . $ssname . ' ON ' . $ssname . '.contextid = c.id AND ' . $ssname . '.stepid = ' . $sname . '.id';
+            $this->sqldata->fields[] = $sname  . '.name            AS stepno_' . $stepno . '_name';
+            $this->sqldata->fields[] = $ssname . '.state           AS stepno_' . $stepno . '_state';
+            $this->sqldata->fields[] = $ssname . '.comment         AS stepno_' . $stepno . '_comment';
+            $this->sqldata->fields[] = $ssname . '.commentformat   AS stepno_' . $stepno . '_commentformat';
+            $this->sqldata->fields[] = $ssname . '.timemodified    AS stepno_' . $stepno . '_timemodified';
+            $this->sqldata->from[] = 'LEFT JOIN {block_workflow_steps} AS ' . $sname  . ' ON '
+                                                    . $sname  . '.stepno = ' . $stepno . ' AND ' . $sname . '.workflowid = w.id';
+            $this->sqldata->from[] = 'LEFT JOIN {block_workflow_step_states} AS ' . $ssname . ' ON '
+                                                    . $ssname . '.contextid = c.id AND ' . $ssname . '.stepid = ' . $sname . '.id';
             $this->sqldata->stepstates[] = $ssname . '.state';
             $stepno++;
         }
@@ -384,21 +375,19 @@ class report_workflow_table               extends table_sql {
      * @param   array $row  The row being processed
      * @return  array       One row for the table
      */
-    function format_row($row){
+    public function format_row($row) {
         $formattedrow = array();
-        foreach (array_keys($this->columns) as $column){
+        foreach (array_keys($this->columns) as $column) {
             $colmethodname = 'col_' . $column;
 
             if (preg_match('/stepno_([0-9]+)_data$/', $column, $matches)) {
-                // If this field is the data field for the step call the column step settings
+                // If this field is the data field for the step call the column step settings.
                 $formattedcolumn = $this->col_step($row, $matches[1]);
-            }
-            else if (method_exists($this, $colmethodname)){
+            } else if (method_exists($this, $colmethodname)) {
                 $formattedcolumn = $this->$colmethodname($row);
-            }
-            else {
+            } else {
                 $formattedcolumn = $this->other_cols($column, $row);
-                if ($formattedcolumn===NULL){
+                if ($formattedcolumn===null) {
                     $formattedcolumn = $row->$column;
                 }
             }
@@ -415,17 +404,17 @@ class report_workflow_table               extends table_sql {
      * @return  string              The formatted text
      */
     public function col_step($row, $stepno) {
-        // The field names stored in the database
+        // The field names stored in the database.
         $stepname       = 'stepno_' . $stepno . '_name';
         $state          = 'stepno_' . $stepno . '_state';
         $comment        = 'stepno_' . $stepno . '_comment';
         $commentformat  = 'stepno_' . $stepno . '_commentformat';
         $timemodified   = 'stepno_' . $stepno . '_timemodified';
 
-        // The string we'll be returning later
+        // The string we'll be returning later.
         $output = '';
 
-        // First check for detailed/brief
+        // First check for detailed/brief.
         if ($this->detailed == REPORT_WORKFLOW_DETAIL) {
 
             $seperator = ': ';
@@ -434,28 +423,25 @@ class report_workflow_table               extends table_sql {
             }
 
             // Report the step state (written in full)
-            // and the timemodified for that state
+            // and the timemodified for that state.
             if ($stepstate = $row->$state) {
                 $text  = get_string($stepstate, 'report_workflow');
                 $text .= $seperator;
                 $text .= userdate($row->$timemodified, get_string('strftimedate', 'langconfig'));
-            }
-            else {
+            } else {
                 $text = get_string('notstarted', 'report_workflow');
             }
 
             if (!$this->is_downloading()) {
                 $tooltip = $this->cell_tooltip($row->$stepname);
                 $output  = html_writer::tag('div', $text, array('title' => $tooltip));
-            }
-            else {
+            } else {
                 $output = $text;
             }
-        }
-        else {
-            // The tooltip
+        } else {
+            // The tooltip.
             $tooltip = $this->cell_tooltip($row->$stepname, $row->$state, $row->$timemodified);
-            // The cell text
+            // The cell text.
             switch ($row->$state) {
                 case (BLOCK_WORKFLOW_STATE_ACTIVE):
                     $text = get_string('brief_active',      'report_workflow');
@@ -473,8 +459,7 @@ class report_workflow_table               extends table_sql {
             }
             if (!$this->is_downloading()) {
                 $output  = html_writer::tag('div', $text, array('title' => $tooltip));
-            }
-            else {
+            } else {
                 $output = $text;
             }
         }
@@ -494,7 +479,8 @@ class report_workflow_table               extends table_sql {
             $tooltip .= '&#13;' . get_string('stepstate', 'report_workflow') . get_string($stepstate, 'report_workflow');
         }
         if ($stepdate) {
-            $tooltip .= '&#13;' . get_string('lastmodified', 'report_workflow') . userdate($stepdate, get_string('strftimedate', 'langconfig'));
+            $tooltip .= '&#13;' . get_string('lastmodified', 'report_workflow') . userdate($stepdate,
+                                                                                get_string('strftimedate', 'langconfig'));
         }
         return $tooltip;
     }
@@ -538,12 +524,12 @@ class report_workflow_table_course        extends report_workflow_table {
     }
 
     /**
-     * Format the coursename column to add link to workflow overview if not 
+     * Format the coursename column to add link to workflow overview if not
      * downloading
      *
      * @param   string  The field contents
      */
-    protected function col_courseshortname($row){
+    protected function col_courseshortname($row) {
 
         if ($this->is_downloading()) {
             return $row->courseshortname;
@@ -595,12 +581,12 @@ class report_workflow_table_activity      extends report_workflow_table {
 
         $modid = $DB->get_field('modules', 'id', array('name' => $this->appliesto));
 
-        $this->sqldata->fields[] = 'cc.name             AS categoryname';
-        $this->sqldata->fields[] = "{$this->appliesto}.name                 AS activityname";
-        $this->sqldata->from[]   = 'LEFT  JOIN {course_modules}             AS cm ON cm.id        = c.instanceid AND cm.module = ' . $modid;
-        $this->sqldata->from[]   = "LEFT  JOIN {{$this->appliesto}}         AS {$this->appliesto} ON {$this->appliesto}.id = cm.instance";
-        $this->sqldata->from[]   = 'LEFT  JOIN {course}                     AS co ON co.id        = cm.course';
-        $this->sqldata->from[]   = 'LEFT  JOIN {course_categories}          AS cc ON cc.id        = co.category';
+        $this->sqldata->fields[] = 'cc.name AS categoryname';
+        $this->sqldata->fields[] = "{$this->appliesto}.name AS activityname";
+        $this->sqldata->from[] = 'LEFT JOIN {course_modules} AS cm ON cm.id = c.instanceid AND cm.module = ' . $modid;
+        $this->sqldata->from[] = "LEFT JOIN {{$this->appliesto}} AS {$this->appliesto} ON {$this->appliesto}.id = cm.instance";
+        $this->sqldata->from[] = 'LEFT JOIN {course} AS co ON co.id = cm.course';
+        $this->sqldata->from[] = 'LEFT JOIN {course_categories} AS cc ON cc.id = co.category';
     }
 
     /**
@@ -608,7 +594,7 @@ class report_workflow_table_activity      extends report_workflow_table {
      *
      * @param   string  The field contents
      */
-    protected function col_activityname($row){
+    protected function col_activityname($row) {
 
         if ($this->is_downloading()) {
             return $row->activityname;
@@ -636,14 +622,14 @@ class report_workflow_table_quiz_like_activity extends report_workflow_table_act
     public function __construct($type) {
         parent::__construct($type, 'block-workflow-report-overview-' . $type);
 
-        // Two weeks before opening date
+        // Two weeks before opening date.
         $this->closingcolumns['2wbod'] = get_string('report_2wbod',     'report_workflow');
         $this->no_sorting('2wbod');
 
-        // Quiz Opening date
+        // Quiz Opening date.
         $this->closingcolumns['timeopen'] =  get_string('report_opendate',  'report_workflow');
 
-        // Quiz Closing date
+        // Quiz Closing date.
         $this->closingcolumns['timeclose'] = get_string('report_closedate', 'report_workflow');
     }
 

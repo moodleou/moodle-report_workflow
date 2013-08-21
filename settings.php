@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-// just a link to course report
+// Just a link to course report.
 $ADMIN->add('reports', new admin_externalpage('reportworkflow', get_string('pluginname', 'report_workflow'),
-		"$CFG->wwwroot/report/workflow/index.php", 'report/workflow:view'));
+                                        "$CFG->wwwroot/report/workflow/index.php", 'report/workflow:view'));
 
-// no report settings
+// No report settings.
 $settings = null;

@@ -36,8 +36,10 @@ function xmldb_report_workflow_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2012021500) {
-        $DB->set_field('user_preferences', 'name', 'report_workflow_rowsperpage', array('name' => 'admin_report_workflow_rowsperpage'));
-        $DB->set_field('user_preferences', 'name', 'report_workflow_displaytype', array('name' => 'admin_report_workflow_displaytype'));
+        $DB->set_field('user_preferences', 'name', 'report_workflow_rowsperpage',
+                                array('name' => 'admin_report_workflow_rowsperpage'));
+        $DB->set_field('user_preferences', 'name', 'report_workflow_displaytype',
+                                array('name' => 'admin_report_workflow_displaytype'));
 
         upgrade_plugin_savepoint(true, 2012021500, 'report', 'workflow');
     }

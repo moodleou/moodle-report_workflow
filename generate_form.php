@@ -23,7 +23,7 @@
  */
 
 if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
 }
 
 require_once($CFG->libdir . '/formslib.php');
@@ -38,14 +38,13 @@ class report_workflow_configure_form extends moodleform {
 
         if ($appliesto == 'course') {
             $appliestostr = get_string('course');
-        }
-        else {
+        } else {
             $appliestostr = get_string('pluginname', 'mod_' . $appliesto);
         }
 
         $mform->addElement('static', 'appliestodesc', get_string('appliesto', 'report_workflow'),
                 $appliestostr);
-        // Add the list of checkbox
+        // Add the list of checkbox.
         foreach ($this->workflows as $workflow) {
             $mform->addElement('advcheckbox', 'workflow[' . $workflow->id . ']',
                     $workflow->name, null, array('group' => 1));
@@ -62,13 +61,13 @@ class report_workflow_configure_form extends moodleform {
             REPORT_WORKFLOW_BRIEF  => get_string('brief', 'report_workflow')
         );
 
-        // Add the displaytype selection
+        // Add the displaytype selection.
         $mform->addElement('select', 'displaytype', get_string('displaytype', 'report_workflow'),
                 $displaytypeoptions);
         $mform->setDefault('displaytype',
                 get_user_preferences('report_workflow_displaytype', REPORT_WORKFLOW_DETAIL));
 
-        // Display the number of rows per page
+        // Display the number of rows per page.
         $perpageoptions = array();
         for ($i = 10; $i <= 100; $i+=10) {
             $perpageoptions[$i] = $i;
@@ -78,11 +77,11 @@ class report_workflow_configure_form extends moodleform {
         $mform->setDefault('rowsperpage',
                 get_user_preferences('report_workflow_rowsperpage', 10));
 
-        // Pass the appliesto as we'll need this again
+        // Pass the appliesto as we'll need this again.
         $mform->addElement('hidden', 'appliesto');
         $mform->setType('appliesto', PARAM_TEXT);
 
-        // Finally add the submit button
+        // Finally add the submit button.
         $this->add_action_buttons(false, get_string('generatereport', 'report_workflow'));
     }
 
