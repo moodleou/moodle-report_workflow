@@ -32,7 +32,7 @@ $appliesto  = optional_param('appliesto', null, PARAM_ALPHA);
 
 // Require login and capability.
 require_login();
-require_capability('report/workflow:view', get_context_instance(CONTEXT_SYSTEM));
+require_capability('report/workflow:view', context_system::instance());
 
 // This is a report workflow page.
 admin_externalpage_setup('reportworkflow');

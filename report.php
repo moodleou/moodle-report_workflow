@@ -35,7 +35,7 @@ $download   = optional_param('download', '', PARAM_ALPHA);
 
 // Require that the user be logged in and have valid permissions.
 require_login();
-require_capability('report/workflow:view', get_context_instance(CONTEXT_SYSTEM));
+require_capability('report/workflow:view', context_system::instance());
 
 // This is a report/workflow page.
 admin_externalpage_setup('reportworkflow', '', array(), '', array('pagelayout' => 'report'));
