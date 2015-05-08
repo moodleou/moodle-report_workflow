@@ -34,3 +34,5 @@ $plugin->release   = 'v1.4 for Moodle 2.7+';
 $plugin->dependencies = array(
     'block_workflow' => 2014111200,
 );
+
+$plugin->outestssufficient = true;
