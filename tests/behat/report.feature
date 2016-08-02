@@ -1,4 +1,4 @@
-@ou @ouvle @report @report_workflow
+@ou @ou_vle @report @report_workflow
 Feature: Workflow report
   In order to manage the creation of many courses
   as a manager
