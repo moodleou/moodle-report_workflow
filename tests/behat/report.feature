@@ -18,12 +18,10 @@ Feature: Workflow report
     And I follow "Import workflow"
     And I upload "blocks/workflow/tests/fixtures/testworkflow.workflow.xml" file to "File" filemanager
     And I press "Import workflow"
-    And I follow "Continue"
     And I follow "Workflows"
     And I follow "Import workflow"
     And I upload "blocks/workflow/tests/fixtures/testworkflow.workflow.xml" file to "File" filemanager
     And I press "Import workflow"
-    And I follow "Continue"
 
     # Add the workflow to both courses, in one case moving to step 2.
     And I am on site homepage
