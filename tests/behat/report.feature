@@ -27,15 +27,15 @@ Feature: Workflow report
     And I am on site homepage
     And I follow "Course 1"
     And I turn editing mode on
-    And I add the "Workflow" block
+    And I add the "Workflows" block
     And I set the field "workflow" to "Test course workflow"
 
     And I am on site homepage
     And I follow "Course 2"
-    And I add the "Workflow" block
+    And I add the "Workflows" block
     And I set the field "workflow" to "Test course workflow1"
     And I press "Finish step"
-    And I click on "Finish step" "button" in the "Finish step" "dialogue"
+    And I click on "#id_submitbutton" "css_element"
 
   @javascript
   Scenario: Run the report
