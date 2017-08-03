@@ -25,13 +25,13 @@ Feature: Workflow report
 
     # Add the workflow to both courses, in one case moving to step 2.
     And I am on site homepage
-    And I follow "Course 1"
+    And I am on "Course 1" course homepage
     And I turn editing mode on
     And I add the "Workflows" block
     And I set the field "workflow" to "Test course workflow"
 
     And I am on site homepage
-    And I follow "Course 2"
+    And I am on "Course 2" course homepage
     And I add the "Workflows" block
     And I set the field "workflow" to "Test course workflow1"
     And I press "Finish step"
