@@ -11,7 +11,7 @@ Feature: Workflow report
       | Course 2 | C2        | 0        |
     And I log in as "admin"
     And I navigate to "Manage editors" node in "Site administration > Plugins > Text editors"
-    And I click on "disable" "link" in the "Atto HTML editor" "table_row"
+    And I click on "Disable" "link" in the "Atto HTML editor" "table_row"
 
     # Import the sample workflow twice, so we have two workflows.
     And I navigate to "Workflows" node in "Site administration > Plugins > Blocks"
