@@ -102,17 +102,17 @@ class report_workflow_table               extends table_sql {
     /**
      * @var array   $openingcolumns An associative array of columns format: array('columnanme' => $columntitle)
      */
-    protected $openingcolumns =  array();
+    protected $openingcolumns = array();
 
     /**
      * @var array $stepcolumns An associative array of columns format: array('columnanme' => $columntitle)
      */
-    protected $stepcolumns   =  array();
+    protected $stepcolumns = array();
 
     /**
      * @var array $closingcolumns An associative array of columns format: array('columnanme' => $columntitle)
      */
-    protected $closingcolumns =  array();
+    protected $closingcolumns = array();
 
     /**
      * @var integer $detailed       Whether this report should be a detailed view
@@ -246,10 +246,10 @@ class report_workflow_table               extends table_sql {
         $this->sqldata->fields[] = 'ss1.commentformat   AS stepno_1_commentformat';
         $this->sqldata->fields[] = 'ss1.timemodified    AS stepno_1_timemodified';
 
-        $this->sqldata->from[]   = '{block_workflow_workflows} AS w';
-        $this->sqldata->from[]   = 'INNER JOIN {block_workflow_steps}       AS s1   ON s1.workflowid = w.id';
-        $this->sqldata->from[]   = 'INNER JOIN {block_workflow_step_states} AS ss1  ON ss1.stepid   = s1.id';
-        $this->sqldata->from[]   = 'LEFT  JOIN {context}                    AS c    ON c.id         = ss1.contextid';
+        $this->sqldata->from[]   = '{block_workflow_workflows} w';
+        $this->sqldata->from[]   = 'INNER JOIN {block_workflow_steps}       s1   ON s1.workflowid = w.id';
+        $this->sqldata->from[]   = 'INNER JOIN {block_workflow_step_states} ss1  ON ss1.stepid   = s1.id';
+        $this->sqldata->from[]   = 'LEFT  JOIN {context}                    c    ON c.id         = ss1.contextid';
         $this->sqldata->where[]  = 's1.stepno = 1';
 
         $this->sqldata->stepstates = array('ss1.state');
@@ -294,7 +294,7 @@ class report_workflow_table               extends table_sql {
                 }
 
                 if ($first) {
-                    $shortnamecondition.= 'AND (';
+                    $shortnamecondition .= 'AND (';
                     $first = false;
                 } else {
                     $shortnamecondition .= ' OR ';
@@ -354,9 +354,9 @@ class report_workflow_table               extends table_sql {
             $this->sqldata->fields[] = $ssname . '.comment         AS stepno_' . $stepno . '_comment';
             $this->sqldata->fields[] = $ssname . '.commentformat   AS stepno_' . $stepno . '_commentformat';
             $this->sqldata->fields[] = $ssname . '.timemodified    AS stepno_' . $stepno . '_timemodified';
-            $this->sqldata->from[] = 'LEFT JOIN {block_workflow_steps} AS ' . $sname  . ' ON '
+            $this->sqldata->from[] = 'LEFT JOIN {block_workflow_steps} ' . $sname  . ' ON '
                                                     . $sname  . '.stepno = ' . $stepno . ' AND ' . $sname . '.workflowid = w.id';
-            $this->sqldata->from[] = 'LEFT JOIN {block_workflow_step_states} AS ' . $ssname . ' ON '
+            $this->sqldata->from[] = 'LEFT JOIN {block_workflow_step_states} ' . $ssname . ' ON '
                                                     . $ssname . '.contextid = c.id AND ' . $ssname . '.stepid = ' . $sname . '.id';
             $this->sqldata->stepstates[] = $ssname . '.state';
             $stepno++;
@@ -387,7 +387,7 @@ class report_workflow_table               extends table_sql {
                 $formattedcolumn = $this->$colmethodname($row);
             } else {
                 $formattedcolumn = $this->other_cols($column, $row);
-                if ($formattedcolumn===null) {
+                if ($formattedcolumn === null) {
                     $formattedcolumn = $row->$column;
                 }
             }
@@ -519,8 +519,8 @@ class report_workflow_table_course        extends report_workflow_table {
     protected function generate_query($workflows) {
         parent::generate_query($workflows);
         $this->sqldata->fields[] = 'cc.name             AS categoryname';
-        $this->sqldata->from[]   = 'LEFT  JOIN {course}                     AS co ON co.id        = c.instanceid';
-        $this->sqldata->from[]   = 'LEFT  JOIN {course_categories}          AS cc ON cc.id        = co.category';
+        $this->sqldata->from[]   = 'LEFT  JOIN {course}                     co ON co.id        = c.instanceid';
+        $this->sqldata->from[]   = 'LEFT  JOIN {course_categories}          cc ON cc.id        = co.category';
     }
 
     /**
@@ -583,10 +583,10 @@ class report_workflow_table_activity      extends report_workflow_table {
 
         $this->sqldata->fields[] = 'cc.name AS categoryname';
         $this->sqldata->fields[] = "{$this->appliesto}.name AS activityname";
-        $this->sqldata->from[] = 'LEFT JOIN {course_modules} AS cm ON cm.id = c.instanceid AND cm.module = ' . $modid;
-        $this->sqldata->from[] = "LEFT JOIN {{$this->appliesto}} AS {$this->appliesto} ON {$this->appliesto}.id = cm.instance";
-        $this->sqldata->from[] = 'LEFT JOIN {course} AS co ON co.id = cm.course';
-        $this->sqldata->from[] = 'LEFT JOIN {course_categories} AS cc ON cc.id = co.category';
+        $this->sqldata->from[] = 'LEFT JOIN {course_modules} cm ON cm.id = c.instanceid AND cm.module = ' . $modid;
+        $this->sqldata->from[] = "LEFT JOIN {{$this->appliesto}} {$this->appliesto} ON {$this->appliesto}.id = cm.instance";
+        $this->sqldata->from[] = 'LEFT JOIN {course} co ON co.id = cm.course';
+        $this->sqldata->from[] = 'LEFT JOIN {course_categories} cc ON cc.id = co.category';
     }
 
     /**
@@ -627,7 +627,7 @@ class report_workflow_table_quiz_like_activity extends report_workflow_table_act
         $this->no_sorting('2wbod');
 
         // Quiz Opening date.
-        $this->closingcolumns['timeopen'] =  get_string('report_opendate',  'report_workflow');
+        $this->closingcolumns['timeopen'] = get_string('report_opendate',  'report_workflow');
 
         // Quiz Closing date.
         $this->closingcolumns['timeclose'] = get_string('report_closedate', 'report_workflow');

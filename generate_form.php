@@ -32,9 +32,9 @@ require_once(dirname(__FILE__) . '/lib.php');
 class report_workflow_configure_form extends moodleform {
     protected $worflows;
     public function definition () {
-        $mform      =  $this->_form;
-        $appliesto  =  $this->_customdata['appliesto'];
-        $this->workflows  =  block_workflow_workflow::available_workflows($appliesto);
+        $mform = $this->_form;
+        $appliesto = $this->_customdata['appliesto'];
+        $this->workflows = block_workflow_workflow::available_workflows($appliesto);
 
         if ($appliesto == 'course') {
             $appliestostr = get_string('course');
@@ -69,7 +69,7 @@ class report_workflow_configure_form extends moodleform {
 
         // Display the number of rows per page.
         $perpageoptions = array();
-        for ($i = 10; $i <= 100; $i+=10) {
+        for ($i = 10; $i <= 100; $i += 10) {
             $perpageoptions[$i] = $i;
         }
         $mform->addElement('select', 'rowsperpage', get_string('rowsperpage', 'report_workflow'),
