@@ -1,4 +1,4 @@
-# Change log for the Variable numeric question type
+# Change log for the Workflow report
 
 
 ## Changes in 1.5
