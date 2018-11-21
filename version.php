@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Workflow report versioning.
+ * Workflow report version information.
  *
  * @package   report_workflow
  * @copyright 2011 The Open University / Lancaster University Network Services Limited
@@ -24,11 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018081300;
+$plugin->version   = 2018112100;
 $plugin->requires  = 2017111300;
 $plugin->component = 'report_workflow';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1.5 for Moodle 3.4+';
+$plugin->release   = 'v1.6 for Moodle 3.4+';
 
 $plugin->dependencies = array(
     'block_workflow' => 2018081300,

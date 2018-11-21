@@ -1,6 +1,11 @@
 # Change log for the Workflow report
 
 
+## Changes in 1.6
+
+* Update Behat tests for Moodle 3.6.
+
+
 ## Changes in 1.5
 
 * Privacy API implementation.
