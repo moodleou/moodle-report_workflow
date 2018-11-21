@@ -10,11 +10,11 @@ Feature: Workflow report
       | Course 1 | C1        | 0        |
       | Course 2 | C2        | 0        |
     And I log in as "admin"
-    And I navigate to "Manage editors" node in "Site administration > Plugins > Text editors"
+    And I navigate to "Plugins > Text editors > Manage editors" in site administration
     And I click on "Disable" "link" in the "Atto HTML editor" "table_row"
 
     # Import the sample workflow twice, so we have two workflows.
-    And I navigate to "Workflows" node in "Site administration > Plugins > Blocks"
+    And I navigate to "Plugins > Blocks > Workflows" in site administration
     And I follow "Import workflow"
     And I upload "blocks/workflow/tests/fixtures/testworkflow.workflow.xml" file to "File" filemanager
     And I press "Import workflow"
@@ -37,7 +37,7 @@ Feature: Workflow report
 
   @javascript
   Scenario: Run the report
-    When I navigate to "Workflows" node in "Site administration > Reports"
+    When I navigate to "Reports > Workflows" in site administration
     And I set the field "Applies to" to "Course"
     And I set the field "Test course workflow" to "1"
     And I set the field "Test course workflow1" to "1"
