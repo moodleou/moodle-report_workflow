@@ -33,9 +33,9 @@ Feature: Workflow report
     And I add the "Workflows" block
     And I set the field "workflow" to "Test course workflow1"
     And I press "Finish step"
-    And I click on "#id_submitbutton" "css_element"
+    And I click on "Finish step" "button" in the "Finish step" "dialogue"
 
-  @javascript
+  @javascript @_file_upload
   Scenario: Run the report
     When I navigate to "Reports > Workflows" in site administration
     And I set the field "Applies to" to "Course"
