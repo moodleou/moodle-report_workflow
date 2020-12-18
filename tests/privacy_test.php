@@ -39,18 +39,12 @@ use report_workflow\privacy\provider;
 class report_workflow_privacy_testcase extends provider_testcase {
 
     /**
-     * Prepare data required for the test case.
-     */
-    public function setUp() {
-        $this->resetAfterTest();
-    }
-
-    /**
      * Test export user preferences when no value is set.
      *
      * @throws coding_exception
      */
     public function test_export_user_preferences_not_defined() {
+        $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         provider::export_user_preferences($user->id);
         $writer = writer::with_context(context_user::instance($user->id));
@@ -63,6 +57,8 @@ class report_workflow_privacy_testcase extends provider_testcase {
      * @throws coding_exception
      */
     public function test_export_user_preferences() {
+        $this->resetAfterTest();
+
         // Define user preferences.
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
