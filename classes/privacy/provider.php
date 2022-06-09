@@ -27,8 +27,6 @@ namespace report_workflow\privacy;
 use \core_privacy\local\request\writer;
 use \core_privacy\local\metadata\collection;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy subsystem implementation.
  *

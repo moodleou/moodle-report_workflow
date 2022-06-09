@@ -18,7 +18,7 @@ Feature: Workflow report
     And I follow "Import workflow"
     And I upload "blocks/workflow/tests/fixtures/testworkflow.workflow.xml" file to "File" filemanager
     And I press "Import workflow"
-    And I follow "Workflows"
+    And I navigate to "Plugins > Blocks > Workflows" in site administration
     And I follow "Import workflow"
     And I upload "blocks/workflow/tests/fixtures/testworkflow.workflow.xml" file to "File" filemanager
     And I press "Import workflow"
