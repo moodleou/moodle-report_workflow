@@ -1,6 +1,11 @@
 # Change log for the Workflow report
 
 
+## Changes in 1.7
+
+* This version works with Moodle 4.0.
+
+
 ## Changes in 1.6
 
 * Update Behat tests for Moodle 3.6.

@@ -21,6 +21,7 @@
  * @copyright  2018 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace report_workflow;
 
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
@@ -36,7 +37,7 @@ use report_workflow\privacy\provider;
  * @copyright  2018 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class report_workflow_privacy_testcase extends provider_testcase {
+class privacy_test extends \core_privacy\tests\provider_testcase {
 
     /**
      * Test export user preferences when no value is set.
@@ -47,7 +48,7 @@ class report_workflow_privacy_testcase extends provider_testcase {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         provider::export_user_preferences($user->id);
-        $writer = writer::with_context(context_user::instance($user->id));
+        $writer = writer::with_context(\context_user::instance($user->id));
         $this->assertFalse($writer->has_any_data());
     }
 
