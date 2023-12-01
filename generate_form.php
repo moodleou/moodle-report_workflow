@@ -28,7 +28,10 @@ require_once($CFG->libdir . '/formslib.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
 class report_workflow_configure_form extends moodleform {
-    protected $worflows;
+
+    /** @var stdClass[] stores the list of available workflows */
+    protected $workflows;
+
     public function definition () {
         $mform = $this->_form;
         $appliesto = $this->_customdata['appliesto'];
