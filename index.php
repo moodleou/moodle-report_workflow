@@ -66,7 +66,7 @@ if (empty($appliesto) || !array_key_exists($appliesto, $allappliesto)) {
 
     // Create the form.
     $reporturl = new moodle_url('/report/workflow/report.php');
-    $form = new report_workflow_configure_form($reporturl, array('appliesto' => $appliesto), 'GET');
+    $form = new report_workflow_configure_form($reporturl, ['appliesto' => $appliesto], 'GET');
 
     // Set the form defaults.
     $defaults = new stdClass();

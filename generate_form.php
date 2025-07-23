@@ -27,12 +27,25 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
+/**
+ * Class report_workflow_configure_form
+ * Form for configuring workflow reports in Moodle.
+ *
+ * @package    report_workflow
+ * @copyright 2011 Lancaster University Network Services Limited
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class report_workflow_configure_form extends moodleform {
 
     /** @var stdClass[] stores the list of available workflows */
     protected $workflows;
 
-    public function definition () {
+    /**
+     * Defines the form elements and validation for the workflow generation form.
+     *
+     * @return void
+     */
+    public function definition() {
         $mform = $this->_form;
         $appliesto = $this->_customdata['appliesto'];
         $this->workflows = block_workflow_workflow::available_workflows($appliesto);
@@ -48,7 +61,7 @@ class report_workflow_configure_form extends moodleform {
         // Add the list of checkbox.
         foreach ($this->workflows as $workflow) {
             $mform->addElement('advcheckbox', 'workflow[' . $workflow->id . ']',
-                    $workflow->name, null, array('group' => 1));
+                    $workflow->name, null, ['group' => 1]);
             $mform->setDefault('workflow[' . $workflow->id . ']', 1);
         }
         $this->add_checkbox_controller(1, null, null);
@@ -57,10 +70,10 @@ class report_workflow_configure_form extends moodleform {
         $mform->addHelpButton('courseregexp', 'courseregexp', 'report_workflow');
         $mform->setType('courseregexp', PARAM_TEXT);
 
-        $displaytypeoptions = array(
+        $displaytypeoptions = [
             REPORT_WORKFLOW_DETAIL => get_string('full', 'report_workflow'),
-            REPORT_WORKFLOW_BRIEF  => get_string('brief', 'report_workflow')
-        );
+            REPORT_WORKFLOW_BRIEF  => get_string('brief', 'report_workflow'),
+        ];
 
         // Add the displaytype selection.
         $mform->addElement('select', 'displaytype', get_string('displaytype', 'report_workflow'),
@@ -69,7 +82,7 @@ class report_workflow_configure_form extends moodleform {
                 get_user_preferences('report_workflow_displaytype', REPORT_WORKFLOW_DETAIL));
 
         // Display the number of rows per page.
-        $perpageoptions = array();
+        $perpageoptions = [];
         for ($i = 10; $i <= 100; $i += 10) {
             $perpageoptions[$i] = $i;
         }
@@ -86,6 +99,13 @@ class report_workflow_configure_form extends moodleform {
         $this->add_action_buttons(false, get_string('generatereport', 'report_workflow'));
     }
 
+    /**
+     * Validates the form data.
+     *
+     * @param array $data The form data submitted.
+     * @param array $files The files submitted with the form.
+     * @return array Array of validation errors.
+     */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
 

@@ -24,8 +24,8 @@
 
 namespace report_workflow\privacy;
 
-use \core_privacy\local\request\writer;
-use \core_privacy\local\metadata\collection;
+use core_privacy\local\request\writer;
+use core_privacy\local\metadata\collection;
 
 /**
  * Privacy subsystem implementation.
