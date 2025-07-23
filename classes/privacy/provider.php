@@ -24,8 +24,8 @@
 
 namespace report_workflow\privacy;
 
-use \core_privacy\local\request\writer;
-use \core_privacy\local\metadata\collection;
+use core_privacy\local\request\writer;
+use core_privacy\local\metadata\collection;
 
 /**
  * Privacy subsystem implementation.
@@ -36,7 +36,6 @@ use \core_privacy\local\metadata\collection;
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\user_preference_provider {
-
     /**
      * Returns meta data about this system.
      *
@@ -44,10 +43,14 @@ class provider implements
      * @return collection A listing of user data stored through this system.
      */
     public static function get_metadata(collection $collection): collection {
-        $collection->add_user_preference('report_workflow_displaytype',
-            'privacy:metadata:preference:report_workflow_displaytype');
-        $collection->add_user_preference('report_workflow_rowsperpage',
-            'privacy:metadata:preference:report_workflow_rowsperpage');
+        $collection->add_user_preference(
+            'report_workflow_displaytype',
+            'privacy:metadata:preference:report_workflow_displaytype'
+        );
+        $collection->add_user_preference(
+            'report_workflow_rowsperpage',
+            'privacy:metadata:preference:report_workflow_rowsperpage'
+        );
 
         return $collection;
     }
@@ -62,15 +65,23 @@ class provider implements
         // Export display type.
         $prefvalue = get_user_preferences('report_workflow_displaytype', null, $userid);
         if ($prefvalue !== null) {
-            writer::export_user_preference('report_workflow', 'report_workflow_displaytype', $prefvalue,
-                get_string('privacy:metadata:preference:report_workflow_displaytype', 'report_workflow'));
+            writer::export_user_preference(
+                'report_workflow',
+                'report_workflow_displaytype',
+                $prefvalue,
+                get_string('privacy:metadata:preference:report_workflow_displaytype', 'report_workflow')
+            );
         }
 
         // Export rows per page.
         $prefvalue = get_user_preferences('report_workflow_rowsperpage', null, $userid);
         if ($prefvalue !== null) {
-            writer::export_user_preference('report_workflow', 'report_workflow_rowsperpage', $prefvalue,
-                get_string('privacy:metadata:preference:report_workflow_rowsperpage', 'report_workflow'));
+            writer::export_user_preference(
+                'report_workflow',
+                'report_workflow_rowsperpage',
+                $prefvalue,
+                get_string('privacy:metadata:preference:report_workflow_rowsperpage', 'report_workflow')
+            );
         }
     }
 }

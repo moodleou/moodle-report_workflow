@@ -30,7 +30,6 @@
  *
  */
 class report_workflow_renderer extends plugin_renderer_base {
-
     /**
      * Return an HTML Select with a list of the options that a workflow may
      * apply to
@@ -44,7 +43,7 @@ class report_workflow_renderer extends plugin_renderer_base {
         // Display some information about the select.
         $output .= $this->box_start('generalbox boxwidthwide boxaligncenter centerpara', 'appliestoform');
         $output .= $this->heading(get_string('reportsettings', 'report_workflow'));
-        $output .= html_writer::tag('p', get_string('report_intro', 'report_workflow'), array('id' => 'intro'));
+        $output .= html_writer::tag('p', get_string('report_intro', 'report_workflow'), ['id' => 'intro']);
 
         // The URL we return to.
         $url = new moodle_url('/report/workflow/index.php');

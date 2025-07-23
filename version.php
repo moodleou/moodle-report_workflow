@@ -24,14 +24,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022060900;
+$plugin->version   = 2026031700;
 $plugin->requires  = 2021051700;
 $plugin->component = 'report_workflow';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1.7 for Moodle 3.11+';
+$plugin->release   = 'v1.8 for Moodle 5.1+';
 
-$plugin->dependencies = array(
+$plugin->dependencies = [
     'block_workflow' => 2018081300,
-);
+];
 
 $plugin->outestssufficient = true;

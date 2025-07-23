@@ -1,6 +1,11 @@
 # Change log for the Workflow report
 
 
+## Changes in 1.8
+
+* This version works with Moodle 5.1.
+
+
 ## Changes in 1.7
 
 * This version works with Moodle 4.0.
