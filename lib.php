@@ -93,27 +93,27 @@ class report_workflow_table               extends table_sql {
     protected $sqldata;
 
     /**
-     * @var integer $maxsteps       The largest number of steps in one of the queried workflows
+     * @var int $maxsteps       The largest number of steps in one of the queried workflows
      */
     protected $maxsteps;
 
     /**
      * @var array   $openingcolumns An associative array of columns format: array('columnanme' => $columntitle)
      */
-    protected $openingcolumns = array();
+    protected $openingcolumns = [];
 
     /**
      * @var array $stepcolumns An associative array of columns format: array('columnanme' => $columntitle)
      */
-    protected $stepcolumns = array();
+    protected $stepcolumns = [];
 
     /**
      * @var array $closingcolumns An associative array of columns format: array('columnanme' => $columntitle)
      */
-    protected $closingcolumns = array();
+    protected $closingcolumns = [];
 
     /**
-     * @var integer $detailed       Whether this report should be a detailed view
+     * @var int $detailed       Whether this report should be a detailed view
      */
     protected $detailed;
 
@@ -122,7 +122,7 @@ class report_workflow_table               extends table_sql {
      */
     public function __construct($uniqueid) {
         parent::__construct($uniqueid);
-        $this->closingcolumns = array('workflowname' => get_string('report_workflowname', 'report_workflow'));
+        $this->closingcolumns = ['workflowname' => get_string('report_workflowname', 'report_workflow')];
     }
 
     /**
@@ -142,9 +142,9 @@ class report_workflow_table               extends table_sql {
         // - Opening columns
         // - Step Columns
         // - Closing columns.
-        $columnnames = array();
-        $headernames = array();
-        $nosorting   = array();
+        $columnnames = [];
+        $headernames = [];
+        $nosorting   = [];
 
         // Add the opening columns and their headers.
         foreach ($this->openingcolumns as $columnname => $columnheader) {
@@ -205,7 +205,7 @@ class report_workflow_table               extends table_sql {
         }
 
         // Always use Step 1, Step 2, etc. for the column headings.
-        $c = array();
+        $c = [];
         for ($i = 1; $i <= $maxsteps; ++$i) {
             $c['stepno_'.$i.'_data'] = get_string('stepno_', 'report_workflow', $i);
         }
@@ -250,7 +250,7 @@ class report_workflow_table               extends table_sql {
         $this->sqldata->from[]   = 'LEFT  JOIN {context}                    c    ON c.id         = ss1.contextid';
         $this->sqldata->where[]  = 's1.stepno = 1';
 
-        $this->sqldata->stepstates = array('ss1.state');
+        $this->sqldata->stepstates = ['ss1.state'];
 
         // Add the list of workflows.
         foreach ($workflows as $workflow) {
@@ -274,7 +274,7 @@ class report_workflow_table               extends table_sql {
         global $DB;
 
         $shortnamecondition = '';
-        $shortnamevalues = array();
+        $shortnamevalues = [];
         $splitshortname = preg_split('~[ ,]+~', $courseregexp, null, PREG_SPLIT_NO_EMPTY);
         if (count($splitshortname) > 0) {
             $first = true;
@@ -374,7 +374,7 @@ class report_workflow_table               extends table_sql {
      * @return  array       One row for the table
      */
     public function format_row($row) {
-        $formattedrow = array();
+        $formattedrow = [];
         foreach (array_keys($this->columns) as $column) {
             $colmethodname = 'col_' . $column;
 
@@ -432,7 +432,7 @@ class report_workflow_table               extends table_sql {
 
             if (!$this->is_downloading()) {
                 $tooltip = $this->cell_tooltip($row->$stepname);
-                $output  = html_writer::tag('div', $text, array('title' => $tooltip));
+                $output  = html_writer::tag('div', $text, ['title' => $tooltip]);
             } else {
                 $output = $text;
             }
@@ -456,7 +456,7 @@ class report_workflow_table               extends table_sql {
                     break;
             }
             if (!$this->is_downloading()) {
-                $output  = html_writer::tag('div', $text, array('title' => $tooltip));
+                $output  = html_writer::tag('div', $text, ['title' => $tooltip]);
             } else {
                 $output = $text;
             }
@@ -496,6 +496,9 @@ class report_workflow_table               extends table_sql {
  */
 class report_workflow_table_course        extends report_workflow_table {
 
+    /**
+     * Constructor for the report_workflow_table_course class.
+     */
     public function __construct() {
         parent::__construct('block-workflow-report-overview-course');
         $this->openingcolumns['courseshortname']   = get_string('course');
@@ -533,10 +536,10 @@ class report_workflow_table_course        extends report_workflow_table {
             return $row->courseshortname;
         }
 
-        $url = new moodle_url('/blocks/workflow/overview.php',
-                               array('contextid'  => $row->contextid,
-                                     'workflowid' => $row->workflowid
-                              ));
+        $url = new moodle_url('/blocks/workflow/overview.php', [
+            'contextid'  => $row->contextid,
+            'workflowid' => $row->workflowid,
+        ]);
         return html_writer::link($url, $row->courseshortname);
     }
 }
@@ -551,8 +554,18 @@ class report_workflow_table_course        extends report_workflow_table {
  * @subpackage workflow
  */
 class report_workflow_table_activity      extends report_workflow_table {
+
+    /**
+     * @var string $appliesto the element this workflow applies to.
+     */
     protected $appliesto;
 
+    /**
+     * Constructor for the class report_workflow_table_activity.
+     *
+     * @param string $appliesto Defines what the workflow applies to
+     * @param string $uniqueid Unique identifier for this instance, defaults to 'block-workflow-report-overview-activity'
+     */
     public function __construct($appliesto, $uniqueid = 'block-workflow-report-overview-activity') {
         parent::__construct($uniqueid);
         $this->appliesto = $appliesto;
@@ -577,7 +590,7 @@ class report_workflow_table_activity      extends report_workflow_table {
 
         parent::generate_query($workflows);
 
-        $modid = $DB->get_field('modules', 'id', array('name' => $this->appliesto));
+        $modid = $DB->get_field('modules', 'id', ['name' => $this->appliesto]);
 
         $this->sqldata->fields[] = 'cc.name AS categoryname';
         $this->sqldata->fields[] = "{$this->appliesto}.name AS activityname";
@@ -598,10 +611,10 @@ class report_workflow_table_activity      extends report_workflow_table {
             return $row->activityname;
         }
 
-        $url = new moodle_url('/blocks/workflow/overview.php',
-                               array('contextid'  => $row->contextid,
-                                     'workflowid' => $row->workflowid
-                              ));
+        $url = new moodle_url('/blocks/workflow/overview.php', [
+            'contextid'  => $row->contextid,
+            'workflowid' => $row->workflowid,
+        ]);
         return html_writer::link($url, $row->activityname);
     }
 }
@@ -617,6 +630,11 @@ class report_workflow_table_activity      extends report_workflow_table {
  */
 class report_workflow_table_quiz_like_activity extends report_workflow_table_activity {
 
+    /**
+     * Constructor for the class report_workflow_table_quiz_like_activity.
+     *
+     * @param string $type The type of workflow to be constructed.
+     */
     public function __construct($type) {
         parent::__construct($type, 'block-workflow-report-overview-' . $type);
 
@@ -679,10 +697,19 @@ class report_workflow_table_quiz_like_activity extends report_workflow_table_act
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class report_workflow_table_activity_quiz extends report_workflow_table_quiz_like_activity {
+    /**
+     * Constructor for the report_workflow_table_activity_quiz class.
+     */
     public function __construct() {
         parent::__construct('quiz');
     }
 
+    /**
+     * Generates a database query based on provided workflows.
+     *
+     * @param array|object $workflows The workflow(s) to generate a query for
+     * @return string The generated SQL query
+     */
     protected function generate_query($workflows) {
         parent::generate_query($workflows);
         $this->sqldata->fields[] = 'quiz.timeopen          AS timeopen';
@@ -698,10 +725,19 @@ class report_workflow_table_activity_quiz extends report_workflow_table_quiz_lik
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class report_workflow_table_activity_externalquiz extends report_workflow_table_quiz_like_activity {
+    /**
+     * Constructor for the class report_workflow_table_activity_externalquiz.
+     */
     public function __construct() {
         parent::__construct('externalquiz');
     }
 
+    /**
+     * Generates an SQL query based on provided workflows.
+     *
+     * @param array $workflows The workflows to include in the query.
+     * @return string The generated SQL query.
+     */
     protected function generate_query($workflows) {
         parent::generate_query($workflows);
         $this->sqldata->fields[] = 'externalquiz.timeopen          AS timeopen';

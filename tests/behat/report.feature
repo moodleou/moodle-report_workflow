@@ -11,7 +11,7 @@ Feature: Workflow report
       | Course 2 | C2        | 0        |
     And I log in as "admin"
     And I navigate to "Plugins > Text editors > Manage editors" in site administration
-    And I click on "Disable" "checkbox" in the "Atto HTML editor" "table_row"
+    And I click on "Disable" "checkbox" in the "TinyMCE editor" "table_row"
 
     # Import the sample workflow twice, so we have two workflows.
     And I navigate to "Plugins > Blocks > Workflows" in site administration
