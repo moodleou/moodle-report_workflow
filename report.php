@@ -38,20 +38,17 @@ require_login();
 require_capability('report/workflow:view', context_system::instance());
 
 // This is a report/workflow page.
-admin_externalpage_setup('reportworkflow', '', array(), '', array('pagelayout' => 'report'));
+admin_externalpage_setup('reportworkflow', '', [], '', ['pagelayout' => 'report']);
 
 // Instantiate the form
 // We must provide the appliesto, otherwise the checkboxes aren't correctly returned.
-$form = new report_workflow_configure_form(null, array('appliesto' => $appliesto), 'GET');
+$form = new report_workflow_configure_form(null, ['appliesto' => $appliesto], 'GET');
 
 if ($form->is_cancelled()) {
     // The form was cancelled -- return to the index page.
     redirect(new moodle_url('/report/workflow/index.php'));
-
 } else if ($data = $form->get_data()) {
     // The form was submitted and passed validation.
-
-
     // Set user preferences.
     set_user_preference('report_workflow_displaytype', $data->displaytype);
     set_user_preference('report_workflow_rowsperpage', $data->rowsperpage);
@@ -70,7 +67,7 @@ if ($form->is_cancelled()) {
 
 
     // Create an array of block_workflow_workflow objects as these will be needed for the table generation.
-    $workflows = array();
+    $workflows = [];
     foreach ($data->workflow as $workflowid => $v) {
         if ($v) {
             // This workflow was selected so instantiate it and add it to the list.
@@ -94,7 +91,7 @@ if ($form->is_cancelled()) {
     $table = $generator->generate_table($options, $workflows);
 
     // Set the table base URL.
-    $params = array(
+    $params = [
         'appliesto' => $data->appliesto,
         'sesskey' => sesskey(),
         '_qf__report_workflow_configure_form' => 1,
@@ -102,7 +99,7 @@ if ($form->is_cancelled()) {
         'displaytype' => $data->displaytype,
         'rowsperpage' => $data->rowsperpage,
         'submitbutton' => 1,
-    );
+    ];
     foreach ($workflows as $wf) {
         $params['workflow[' . $wf->id . ']'] = 1;
     }
@@ -125,12 +122,10 @@ if ($form->is_cancelled()) {
 
         // Display the footer section.
         echo $OUTPUT->footer();
-
     } else {
         // Actually generate the table.
         $table->out($data->rowsperpage, true);
     }
-
 } else {
     echo $OUTPUT->header();
     echo $OUTPUT->heading(format_string(get_string('report_title', 'report_workflow')));

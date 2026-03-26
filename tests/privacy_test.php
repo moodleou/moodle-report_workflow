@@ -36,28 +36,28 @@ use report_workflow\privacy\provider;
  * @package    report_workflow
  * @copyright  2018 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @coversDefaultClass \report_workflow\privacy\provider
  */
-class privacy_test extends \core_privacy\tests\provider_testcase {
-
+final class privacy_test extends \core_privacy\tests\provider_testcase {
     /**
      * Test export user preferences when no value is set.
      *
+     * @covers ::export_user_preferences
      * @throws coding_exception
      */
-    public function test_export_user_preferences_not_defined() {
+    public function test_export_user_preferences_not_defined(): void {
         $this->resetAfterTest();
         $user = $this->getDataGenerator()->create_user();
         provider::export_user_preferences($user->id);
         $writer = writer::with_context(\context_user::instance($user->id));
         $this->assertFalse($writer->has_any_data());
     }
-
     /**
      * Test export user preferences.
      *
-     * @throws coding_exception
+     * @covers ::export_user_preferences
      */
-    public function test_export_user_preferences() {
+    public function test_export_user_preferences(): void {
         $this->resetAfterTest();
 
         // Define user preferences.
@@ -75,11 +75,11 @@ class privacy_test extends \core_privacy\tests\provider_testcase {
         $this->assertCount(2, (array)$prefs);
         $this->assertEquals((object)[
             'value' => 1,
-            'description' => get_string('privacy:metadata:preference:report_workflow_displaytype', 'report_workflow')
+            'description' => get_string('privacy:metadata:preference:report_workflow_displaytype', 'report_workflow'),
         ], $prefs->report_workflow_displaytype);
         $this->assertEquals((object)[
             'value' => 50,
-            'description' => get_string('privacy:metadata:preference:report_workflow_rowsperpage', 'report_workflow')
+            'description' => get_string('privacy:metadata:preference:report_workflow_rowsperpage', 'report_workflow'),
         ], $prefs->report_workflow_rowsperpage);
     }
 }

@@ -24,17 +24,17 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
+$capabilities = [
 
     // By default given to manager
     // Allows access to, and use of the workflow report.
-    'report/workflow:view' => array(
+    'report/workflow:view' => [
         'captype'       => 'read',
         'contextlevel'  => CONTEXT_SYSTEM,
-        'archetypes'    => array(
+        'archetypes'    => [
             'manager'   => CAP_ALLOW,
-        ),
+        ],
         'clonepermissionsfrom' => 'moodle/site:viewreports',
-    ),
+    ],
 
-);
+];

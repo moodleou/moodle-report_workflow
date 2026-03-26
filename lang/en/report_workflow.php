@@ -22,10 +22,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Core strings.
-$string['pluginname']           = 'Workflows';
-$string['workflow']             = 'Workflows';
-
 $string['aborted']              = 'Aborted';
 $string['active']               = 'Active';
 $string['allrowsperpage']       = 'All rows';
@@ -46,6 +42,7 @@ $string['lastmodified']         = 'Last modified: ';
 $string['mustselectaworkflow']  = 'You must select at least one workflow.';
 $string['notstarted']           = 'Not started';
 $string['noworkflowsdefined']   = 'No workflows are currently defined within your installation';
+$string['pluginname']           = 'Workflows';
 $string['privacy:metadata:preference:report_workflow_displaytype'] = 'Display type.';
 $string['privacy:metadata:preference:report_workflow_rowsperpage'] = 'Rows per page.';
 $string['report_2wbod']         = 'Two weeks before open date';
@@ -61,4 +58,5 @@ $string['rowsperpage']          = 'Rows Per Page';
 $string['stepname']             = 'Step name: ';
 $string['stepno_']              = 'Step {$a}';
 $string['stepstate']            = 'Current state: ';
+$string['workflow']             = 'Workflows';
 $string['workflow:view']        = 'View workflow reports';
